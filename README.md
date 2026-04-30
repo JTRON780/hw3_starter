@@ -97,27 +97,25 @@ Amount,Category,Date
 # Features
 
 * **Add Transaction:**
-  In the 'Data' tab, enter a valid amount and category, then click **Add Transaction**.
-  The valid transaction appears in the table with an auto-generated timestamp, and the total cost row updates automatically.
+  Enter a valid amount and category, then click **Add Transaction**.
+  The valid transaction appears in the list, and the total cost updates automatically.
 
 * **Delete Transaction:**
-  In the 'Data' tab, select a transaction row from the table.
+  Select a valid transaction from the list.
   In the 'Edit' menu, select the 'Delete' menu item.
-  The transaction is removed from the table, and the total cost updates automatically.
+  The valid transaction disappears from the list, and the total cost updates automatically.
 
 * **Save the Transaction List:**
-  In the 'File' menu, select the 'Save As...' menu item.
-  In the Save dialog, select a destination and click the 'Save' button.
-  The transactions are exported to a `.csv` file in the format described above.
+  In the 'File' menu, select the 'Save As...' menu item
+  In the Save dialog, first select a valid output file and then click the 'Save' button
 
 * **Open a Transaction List:**
-  In the 'File' menu, select the 'Open File...' menu item.
-  In the Open dialog, select a valid `.csv` file and click the 'Open' button.
-  The current transaction list is replaced with the imported transactions.
+  In the 'File' menu, select the "Open File..." menu item
+  In the Open dialog, first select a valid input file and then click the 'Open' button
 
 * **Analyze:**
-  Select the 'Analysis' tab.
-  Choose a time window from the dropdown: **All**, **Last year**, or **Last week**.
-  Click the **Analyze** button.
-  If there are transactions within the selected time window, a **bar chart** is displayed showing the **total cost per category** (using the XChart library).
+  First select the 'Analysis' tab.
+  In that tab, select the analysis time window (e.g., 'Last week')
+  In the tab, click the 'Analyze' button
+  If there are transactions within the selected time window, a bar chart is displayed showing the total cost per category (using the XChart library).
   If there are no transactions in that time window, an error message is displayed.
