@@ -58,31 +58,66 @@ From the root directory (containing the build.xml file):
 # Architecture
 
 The Expense Tracker application applies the MVC architecture pattern as follows:
-* model package: Contains the data model represented as a list of transactions
-* view package: Contains the visualizations of the model and supports user interactions
-* controller package: Contains the application logic to process the user interactions
+
+* **model package:** Contains the data model and business logic.
+  - `ExpenseTrackerModel` — Maintains the list of transactions; supports add, remove, and total cost computation.
+  - `Transaction` — Represents a single transaction with amount, category, and auto-generated timestamp (format: `dd-MM-yyyy HH:mm`).
+  - `InputValidation` — Validates user input for amounts, categories, and filenames.
+  - `TransactionExporter` — Strategy interface for exporting transactions to various formats.
+  - `CSVExporter` — CSV implementation of `TransactionExporter`; exports transactions to `.csv` files.
+  - `CSVImporter` — Imports transactions from `.csv` files.
+  - `CSVConstants` — Shared constants for CSV formatting (headers, separators, error messages).
+
+* **view package:** Contains the UI visualizations and user interaction components.
+  - `ExpenseTrackerView` — Main application window (JFrame) with a menu bar (File, Edit) and a tabbed panel (Data, Analysis).
+  - `DataPanelView` — The "Data" tab; provides input fields for amount/category, an "Add Transaction" button, and a table displaying all transactions with a running total.
+  - `AnalysisPanelView` — The "Analysis" tab; provides a time window selector, an "Analyze" button, and displays a bar chart of total cost per category using the XChart library.
+  - `DataAnalysisTimeWindow` — Enum defining the available time windows: All, Last year, Last week.
+  - `DataVizUtils` — Utility class that computes category-based summaries filtered by the selected time window.
+
+* **controller package:** Contains the application logic that connects user interactions to model operations.
+  - `ExpenseTrackerController` — Wires view events (button clicks, menu selections) to model operations (add, delete, import, export, analyze).
+
+## Input Validation Rules
+
+* **Amount:** Must be greater than 0 and less than 1000.
+* **Category:** Must be one of the following (case-insensitive): `food`, `travel`, `bills`, `entertainment`, `other`.
+* **Filename:** Must be non-empty, must end with `.csv`, and must not contain path traversal sequences (`..`).
+
+## CSV File Format
+
+Transactions are saved and loaded in CSV format with the following columns:
+
+```
+Amount,Category,Date
+50.0,food,30-04-2026 16:39
+133.0,travel,30-04-2026 16:39
+```
 
 # Features
 
 * **Add Transaction:**
-  Enter a valid amount and category, then click **Add Transaction**.
-  The valid transaction appears in the list, and the total cost updates automatically.
+  In the 'Data' tab, enter a valid amount and category, then click **Add Transaction**.
+  The valid transaction appears in the table with an auto-generated timestamp, and the total cost row updates automatically.
 
 * **Delete Transaction:**
-  Select a valid transaction from the list.
+  In the 'Data' tab, select a transaction row from the table.
   In the 'Edit' menu, select the 'Delete' menu item.
-  The valid transaction disappears from the list, and the total cost updates automatically.
+  The transaction is removed from the table, and the total cost updates automatically.
 
 * **Save the Transaction List:**
-  In the 'File' menu, select the 'Save As...' menu item
-  In the Save dialog, first select a valid output file and then click the 'Save' button
+  In the 'File' menu, select the 'Save As...' menu item.
+  In the Save dialog, select a destination and click the 'Save' button.
+  The transactions are exported to a `.csv` file in the format described above.
 
 * **Open a Transaction List:**
-  In the 'File' menu, select the "Open File..." menu item
-  In the Open dialog, first select a valid input file and then click the 'Open' button
+  In the 'File' menu, select the 'Open File...' menu item.
+  In the Open dialog, select a valid `.csv` file and click the 'Open' button.
+  The current transaction list is replaced with the imported transactions.
 
 * **Analyze:**
-  First select the 'Analysis' tab.
-  In that tab, select the analysis time window (e.g., 'Last week')
-  In the tab, click the 'Analyze' button
-  If there are transactions in that time window, displays the analysis results. If not, displays an error message.
+  Select the 'Analysis' tab.
+  Choose a time window from the dropdown: **All**, **Last year**, or **Last week**.
+  Click the **Analyze** button.
+  If there are transactions within the selected time window, a **bar chart** is displayed showing the **total cost per category** (using the XChart library).
+  If there are no transactions in that time window, an error message is displayed.
