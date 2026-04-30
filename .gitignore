@@ -1,0 +1,11 @@
+# Compiled class files
+bin/
+
+# Build output
+build/
+
+# JaCoCo coverage data
+jacoco.exec
+
+# OS files
+.DS_Store
