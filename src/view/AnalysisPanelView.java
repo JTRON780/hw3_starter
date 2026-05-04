@@ -57,12 +57,20 @@ public class AnalysisPanelView extends JPanel
 		inputPanel.add(this.analyzeButton);
 		this.dataVizPanel.add(inputPanel);
 		
+		// Accessibility: Set accessible names and descriptions
+		this.timeWindowChooser.getAccessibleContext().setAccessibleName("Analysis Time Window");
+		this.timeWindowChooser.getAccessibleContext().setAccessibleDescription("Select the time window for data analysis: All, Last year, or Last week");
+		this.analyzeButton.getAccessibleContext().setAccessibleDescription("Perform data analysis on transactions within the selected time window");
+		
 		JPanel messagePanel = new JPanel();
 		messagePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		this.messageLabel = new JLabel("");
 		this.messageLabel.setForeground(Color.red);
 		this.messageLabel.setVisible(false);
 		messagePanel.add(this.messageLabel);
+		
+		// Accessibility: Set accessible name for the error message label
+		this.messageLabel.getAccessibleContext().setAccessibleName("Analysis Status Message");
 		
 		setLayout(new BorderLayout());
 		add(this.dataVizPanel, BorderLayout.NORTH);
