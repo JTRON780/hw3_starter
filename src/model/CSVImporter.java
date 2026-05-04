@@ -7,11 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.tinylog.Logger;
+
 
 public class CSVImporter implements CSVConstants {
 	public List<Transaction> importTransactions(String inputFileName) throws IOException {
 		List<Transaction> importedTransactionsList = null;
-		if (inputFileName != null) {	
+		if (inputFileName != null) {
+			Logger.info("Importing transactions from: {}", inputFileName);
 			BufferedReader reader = new BufferedReader(new FileReader(inputFileName));
 			importedTransactionsList = new ArrayList<Transaction>();
 			
@@ -25,6 +28,7 @@ public class CSVImporter implements CSVConstants {
 					double currentAmount = Double.parseDouble(currentAmountString);
 					String currentCategory = tokenizer.nextToken();
 					String currentDate = tokenizer.nextToken();
+					Logger.debug("Parsed line {}: amount={}, category={}, date={}", currentLineNumber, currentAmount, currentCategory, currentDate);
 
 					importedTransactionsList.add(new Transaction(currentAmount, currentCategory, currentDate));
 				}
@@ -32,6 +36,7 @@ public class CSVImporter implements CSVConstants {
 			}
 
 			reader.close();
+			Logger.info("Import complete: {} transactions loaded from {}", importedTransactionsList.size(), inputFileName);
 		}
 		
 		return importedTransactionsList;

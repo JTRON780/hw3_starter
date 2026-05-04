@@ -2,6 +2,8 @@ package model;
 
 import java.util.Arrays;
 
+import org.tinylog.Logger;
+
 public class InputValidation {
 
   public static final String[] VALID_CATEGORIES = {"food", "travel", "bills", "entertainment", "other"};
@@ -10,12 +12,15 @@ public class InputValidation {
     
     // Check range
     if(amount >1000) {
+      Logger.debug("Amount validation failed: {} exceeds 1000", amount);
       return false;
     }
     if (amount < 0){
+      Logger.debug("Amount validation failed: {} is negative", amount);
       return false;
     }
     if (amount == 0){
+      Logger.debug("Amount validation failed: amount is zero");
       return false;
     }
     return true;
@@ -24,19 +29,23 @@ public class InputValidation {
   public static boolean isValidCategory(String category) {
 
     if(category == null) {
+      Logger.debug("Category validation failed: category is null");
       return false; 
     }
   
     if(category.trim().isEmpty()) {
+      Logger.debug("Category validation failed: category is empty");
       return false;
     }
 
     if(!category.matches("[a-zA-Z]+")) {
+      Logger.debug("Category validation failed: '{}' contains non-alphabetic characters", category);
       return false;
     }
 
     if(!Arrays.asList(VALID_CATEGORIES).contains(category.toLowerCase())) {
       // invalid word  
+      Logger.debug("Category validation failed: '{}' is not a valid category", category);
       return false;
     }
   

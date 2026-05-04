@@ -11,6 +11,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.tinylog.Logger;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -171,10 +173,13 @@ public class AnalysisPanelView extends JPanel
 	 */
 	public void performDataAnalysis(ExpenseTrackerModel model) {
 		if (model.getTransactions().isEmpty()) {
+			Logger.warn("Data analysis aborted: no transactions in model");
 			this.messageLabel.setText(NO_TRANSACTIONS_ERROR_MESSAGE);
 			this.messageLabel.setVisible(true);
 		}
 		else {
+			DataAnalysisTimeWindow selectedWindow = (DataAnalysisTimeWindow) this.timeWindowChooser.getSelectedItem();
+			Logger.info("Performing data analysis: time window={}, transactions={}", selectedWindow, model.getTransactions().size());
 			this.messageLabel.setText("");
 			this.messageLabel.setVisible(false);
 			if (this.chartPanel != null) {
@@ -183,10 +188,12 @@ public class AnalysisPanelView extends JPanel
 			}
 			CategoryChart categoryChart = this.createCategoryChart(model);
 			if (categoryChart == null) {
+				Logger.warn("Data analysis: no transactions found in time window '{}'", selectedWindow);
 				this.messageLabel.setText(NO_TRANSACTIONS_ERROR_MESSAGE);
 				this.messageLabel.setVisible(true);				
 			}
 			else {
+				Logger.info("Analysis chart generated successfully for time window '{}'", selectedWindow);
 				this.chartPanel = new XChartPanel<>(categoryChart);
 				this.dataVizPanel.add(this.chartPanel, BorderLayout.CENTER);
 				this.dataVizPanel.revalidate();
