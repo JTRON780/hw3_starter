@@ -43,6 +43,19 @@ public class DataPanelView extends JPanel {
 	    transactionsTable.setDefaultEditor(Object.class, null);
 	    transactionsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	    
+	    // Accessibility: Associate labels with their input fields
+	    amountLabel.setLabelFor(amountField);
+	    categoryLabel.setLabelFor(categoryField);
+	    
+	    // Accessibility: Set accessible names and descriptions
+	    amountField.getAccessibleContext().setAccessibleName("Amount");
+	    amountField.getAccessibleContext().setAccessibleDescription("Enter transaction amount between 0 and 1000");
+	    categoryField.getAccessibleContext().setAccessibleName("Category");
+	    categoryField.getAccessibleContext().setAccessibleDescription("Enter category: food, travel, bills, entertainment, or other");
+	    addTransactionBtn.getAccessibleContext().setAccessibleDescription("Add a new transaction with the entered amount and category");
+	    transactionsTable.getAccessibleContext().setAccessibleName("Transactions Table");
+	    transactionsTable.getAccessibleContext().setAccessibleDescription("Table displaying all transactions with serial number, amount, category, and date");
+	    
 	    setLayout(new BorderLayout());
 	    JPanel addTransactionPanel = new JPanel();
 	    JPanel inputPanel = new JPanel();
